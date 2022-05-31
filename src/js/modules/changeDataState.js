@@ -5,7 +5,9 @@ const changeDataState = (data) => {
     windowWidth = document.querySelectorAll(`#width`),
     windowHeight = document.querySelectorAll(`#height`),
     windowType = document.querySelectorAll(`#view_type`),
-    windowProfile = document.querySelectorAll(`.checkbox`);
+    windowProfile = document.querySelectorAll(`.checkbox`),
+    calcButton = document.querySelector(`.popup_calc_button`),
+    profileButton = document.querySelector(`.popup_calc_profile_button`);
 
   checkNumberInputs(`#width`);
   checkNumberInputs(`#height`);
@@ -34,6 +36,8 @@ const changeDataState = (data) => {
             data[prop] = item.value;
             break;
         }
+
+        console.log(data);
       });
     });
   }

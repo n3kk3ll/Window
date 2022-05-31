@@ -40,14 +40,26 @@ const forms = userData => {
       }
 
       postData(`assets/server.php`, formData)
-      .then(() => {
+      .then((res) => {
+        console.log(res);
         statusMessage.textContent = message.success;
       })
       .catch(() => statusMessage.textContent = message.failure)
       .finally(() => {
         clearInputs();
+        for(let prop in userData) {
+          if(prop === `form` || prop === `type`) {
+            continue;
+          }
+          delete userData[prop];
+        }
+        console.log(userData);
         setTimeout(() => {
           statusMessage.remove();
+          if(form.getAttribute(`data-calc`) === `end`) {
+            document.querySelector(`.popup_calc_end`).style.display = `none`;
+            document.body.classList.remove(`modal-open`);
+          }
         }, 5000);
       });
     });

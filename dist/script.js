@@ -17815,7 +17815,10 @@ __webpack_require__.r(__webpack_exports__);
 window.addEventListener("DOMContentLoaded", function () {
   "use strict";
 
-  var userDataState = {};
+  var userDataState = {
+    form: 0,
+    type: "tree"
+  };
   Object(_modules_changeDataState__WEBPACK_IMPORTED_MODULE_4__["default"])(userDataState);
   Object(_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".glazing_slider", ".glazing_block", ".glazing_content", "active");
@@ -17846,7 +17849,9 @@ var changeDataState = function changeDataState(data) {
       windowWidth = document.querySelectorAll("#width"),
       windowHeight = document.querySelectorAll("#height"),
       windowType = document.querySelectorAll("#view_type"),
-      windowProfile = document.querySelectorAll(".checkbox");
+      windowProfile = document.querySelectorAll(".checkbox"),
+      calcButton = document.querySelector(".popup_calc_button"),
+      profileButton = document.querySelector(".popup_calc_profile_button");
   Object(_checkNumberInputs__WEBPACK_IMPORTED_MODULE_1__["default"])("#width");
   Object(_checkNumberInputs__WEBPACK_IMPORTED_MODULE_1__["default"])("#height");
 
@@ -17878,6 +17883,8 @@ var changeDataState = function changeDataState(data) {
             data[prop] = item.value;
             break;
         }
+
+        console.log(data);
       });
     });
   }
@@ -18007,14 +18014,30 @@ var forms = function forms(userData) {
         }
       }
 
-      postData("assets/server.php", formData).then(function () {
+      postData("assets/server.php", formData).then(function (res) {
+        console.log(res);
         statusMessage.textContent = message.success;
       }).catch(function () {
         return statusMessage.textContent = message.failure;
       }).finally(function () {
         clearInputs();
+
+        for (var prop in userData) {
+          if (prop === "form" || prop === "type") {
+            continue;
+          }
+
+          delete userData[prop];
+        }
+
+        console.log(userData);
         setTimeout(function () {
           statusMessage.remove();
+
+          if (form.getAttribute("data-calc") === "end") {
+            document.querySelector(".popup_calc_end").style.display = "none";
+            document.body.classList.remove("modal-open");
+          }
         }, 5000);
       });
     });
@@ -18090,7 +18113,7 @@ var modals = function modals() {
     }, time);
   }
 
-  showModalAfterTime(".popup", 6e3);
+  showModalAfterTime(".popup", 60e3);
   handleModal(".popup_engineer_btn", ".popup_engineer", ".popup_close");
   handleModal(".phone_link", ".popup", ".popup_close");
   handleModal(".popup_calc_btn", ".popup_calc", ".popup_calc_close");

@@ -7,7 +7,10 @@ import changeDataState from "./modules/changeDataState";
 window.addEventListener(`DOMContentLoaded`, () => {
   `use strict`;
 
-  let userDataState = {};
+  let userDataState = {
+    form: 0,
+    type: `tree`
+  };
 
   changeDataState(userDataState);
 

@@ -51,7 +51,7 @@ const modals = () => {
     }, time);
   }
   
-  showModalAfterTime(`.popup`, 6e3);
+  showModalAfterTime(`.popup`, 60e3);
 
   handleModal(`.popup_engineer_btn`, `.popup_engineer`, `.popup_close`);
   handleModal(`.phone_link`, `.popup`, `.popup_close`);

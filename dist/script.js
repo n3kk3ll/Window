@@ -17807,6 +17807,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_tabs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules/tabs */ "./src/js/modules/tabs.js");
 /* harmony import */ var _modules_forms__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/forms */ "./src/js/modules/forms.js");
 /* harmony import */ var _modules_changeDataState__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/changeDataState */ "./src/js/modules/changeDataState.js");
+/* harmony import */ var _modules_timer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/timer */ "./src/js/modules/timer.js");
+/* harmony import */ var _modules_imagesModal__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/imagesModal */ "./src/js/modules/imagesModal.js");
+
+
 
 
 
@@ -17820,11 +17824,14 @@ window.addEventListener("DOMContentLoaded", function () {
     type: "tree"
   };
   Object(_modules_changeDataState__WEBPACK_IMPORTED_MODULE_4__["default"])(userDataState);
+  var deadline = "2022-06-18 00:00";
   Object(_modules_modal__WEBPACK_IMPORTED_MODULE_1__["default"])();
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".glazing_slider", ".glazing_block", ".glazing_content", "active");
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".decoration_slider", ".no_click", ".decoration_content > div > div", "after_click");
   Object(_modules_tabs__WEBPACK_IMPORTED_MODULE_2__["default"])(".balcon_icons", ".balcon_icons_img", ".big_img > img", "do_image_more", "inline-block");
   Object(_modules_forms__WEBPACK_IMPORTED_MODULE_3__["default"])(userDataState);
+  Object(_modules_timer__WEBPACK_IMPORTED_MODULE_5__["default"])(".container1", deadline);
+  Object(_modules_imagesModal__WEBPACK_IMPORTED_MODULE_6__["default"])();
 });
 
 /***/ }),
@@ -18049,6 +18056,43 @@ var forms = function forms(userData) {
 
 /***/ }),
 
+/***/ "./src/js/modules/imagesModal.js":
+/*!***************************************!*\
+  !*** ./src/js/modules/imagesModal.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var imagesModal = function imagesModal() {
+  var imgPopup = document.createElement("div"),
+      section = document.querySelector(".works"),
+      bigImage = document.createElement("img");
+  imgPopup.classList.add("popup_works");
+  section.appendChild(imgPopup);
+  imgPopup.appendChild(bigImage);
+  section.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    if (e.target && e.target.classList.contains("preview")) {
+      imgPopup.style.display = "flex";
+      document.body.classList.add("modal-open");
+      var path = e.target.parentNode.getAttribute("href");
+      bigImage.setAttribute("src", path);
+    }
+
+    if (e.target === imgPopup) {
+      imgPopup.style.display = "none";
+      document.body.classList.remove("modal-open");
+    }
+  });
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (imagesModal);
+
+/***/ }),
+
 /***/ "./src/js/modules/modal.js":
 /*!*********************************!*\
   !*** ./src/js/modules/modal.js ***!
@@ -18177,6 +18221,64 @@ var tabs = function tabs(headerSelector, tabSelector, contentSelector, activeCla
 };
 
 /* harmony default export */ __webpack_exports__["default"] = (tabs);
+
+/***/ }),
+
+/***/ "./src/js/modules/timer.js":
+/*!*********************************!*\
+  !*** ./src/js/modules/timer.js ***!
+  \*********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+var timer = function timer(id, deadline) {
+  var getTimeToDeadline = function getTimeToDeadline(endTime) {
+    var timeLeft = Date.parse(endTime) - Date.parse(new Date()),
+        msInDay = Math.floor(timeLeft / (1000 * 60 * 60 * 24)),
+        msInHour = Math.floor(timeLeft / (1000 * 60 * 60) % 24),
+        msInMinute = Math.floor(timeLeft / (1000 * 60) % 60),
+        msInSecond = Math.floor(timeLeft / 1000 % 60);
+    return {
+      'total': timeLeft,
+      'days': msInDay,
+      'hours': msInHour,
+      'minutes': msInMinute,
+      'seconds': msInSecond
+    };
+  };
+
+  var setTimer = function setTimer(selector, endtime) {
+    var clock = document.querySelector(selector),
+        days = clock.querySelector("#days"),
+        hours = clock.querySelector("#hours"),
+        minutes = clock.querySelector("#minutes"),
+        seconds = clock.querySelector("#seconds"),
+        interval = setInterval(updateClock, 1000);
+    updateClock();
+
+    function updateClock() {
+      var timeLeft = getTimeToDeadline(endtime);
+      days.textContent = timeLeft.days >= 0 && timeLeft.days < 10 ? "0".concat(timeLeft.days) : timeLeft.days;
+      hours.textContent = timeLeft.hours >= 0 && timeLeft.hours < 10 ? "0".concat(timeLeft.hours) : timeLeft.hours;
+      minutes.textContent = timeLeft.minutes >= 0 && timeLeft.minutes < 10 ? "0".concat(timeLeft.minutes) : timeLeft.minutes;
+      seconds.textContent = timeLeft.seconds >= 0 && timeLeft.seconds < 10 ? "0".concat(timeLeft.seconds) : timeLeft.seconds;
+
+      if (timeLeft.total <= 0) {
+        days.textContent = "00";
+        hours.textContent = "00";
+        minutes.textContent = "00";
+        seconds.textContent = "00";
+        clearInterval(interval);
+      }
+    }
+  };
+
+  setTimer(id, deadline);
+};
+
+/* harmony default export */ __webpack_exports__["default"] = (timer);
 
 /***/ }),
 

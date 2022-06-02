@@ -18,6 +18,19 @@ body {
   color: red;
 }
 
+.show-block {
+  animation: showBlock 1s;
+}
+
+@keyframes showBlock {
+  from {
+    opacity: 0.1;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 a:hover {
   text-decoration: none;
 }

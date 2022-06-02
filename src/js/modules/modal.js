@@ -1,20 +1,25 @@
+import calcScrollWidth from "./calcScrollWidth";
+
 const modals = () => {
+  const scroll = calcScrollWidth();
 
   function handleModal(triggerSelector, modalSelector, closeBtn, closeByOverlayClick = true) {
     const trigger = document.querySelectorAll(triggerSelector),
       modal = document.querySelector(modalSelector),
       close = modal.querySelector(closeBtn),
       popups = document.querySelectorAll(`[data-modal]`);
-
+      
     function openModal() {
       modal.style.display = `block`;
       document.body.classList.add(`modal-open`);
+      document.body.style.marginRight = `${scroll}px`;
     }
 
     function closeModal() {
       closeAllPopups(popups);
       modal.style.display = `none`;
       document.body.classList.remove(`modal-open`);
+      document.body.style.marginRight = `0px`;
     }
 
     function closeAllPopups(popupList) {
@@ -43,14 +48,14 @@ const modals = () => {
     });
 
   }
-
+  
   function showModalAfterTime(modal, time) {
     setTimeout(() => {
       document.querySelector(modal).style.display = `block`;
       document.body.classList.add(`modal-open`);
+      document.body.style.marginRight = `${scroll}px`;
     }, time);
   }
-  
   showModalAfterTime(`.popup`, 60e3);
 
   handleModal(`.popup_engineer_btn`, `.popup_engineer`, `.popup_close`);

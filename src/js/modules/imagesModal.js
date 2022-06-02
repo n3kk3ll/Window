@@ -1,7 +1,10 @@
+import calcScrollWidth from "./calcScrollWidth";
+
 const imagesModal = () => {
   const imgPopup = document.createElement(`div`),
         section = document.querySelector(`.works`),
-        bigImage = document.createElement(`img`);
+        bigImage = document.createElement(`img`),
+        scroll = calcScrollWidth();
 
   imgPopup.classList.add(`popup_works`);
   section.appendChild(imgPopup);
@@ -13,6 +16,7 @@ const imagesModal = () => {
     if(e.target && e.target.classList.contains(`preview`)) {
       imgPopup.style.display = `flex`;
       document.body.classList.add(`modal-open`);
+      document.body.style.marginRight = `${scroll}px`;
       
       const path = e.target.parentNode.getAttribute(`href`);
       bigImage.setAttribute(`src`, path);
@@ -21,6 +25,7 @@ const imagesModal = () => {
     if(e.target === imgPopup) {
       imgPopup.style.display = `none`;
       document.body.classList.remove(`modal-open`);
+      document.body.style.marginRight = `0px`;
     }
   });
 };
